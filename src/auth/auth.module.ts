@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
-import { ServiceModule } from './service/service.module';
-import { AuthController } from './auth.controller';
+import { PassportModule } from '@nestjs/passport';
+import { GithubStrategy } from './github.strategy';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [ServiceModule],
-  controllers: [AuthController],
+  imports: [
+    PassportModule.register({ defaultStrategy: 'github' }),
+    ConfigModule.forRoot(),
+  ],
+  providers: [GithubStrategy],
+  exports: [PassportModule],
 })
 export class AuthModule {}
