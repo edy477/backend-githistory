@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from "@nestjs/axios";
 import { AxiosResponse } from 'axios';
-import { map, Observable, tap } from "rxjs";
+import { map, Observable, pipe, tap } from "rxjs";
 import { ConfigService } from '@nestjs/config';
-
+import { Octokit } from "@octokit/core";
 @Injectable()
 export class GithubService {
   constructor(
@@ -18,23 +18,28 @@ export class GithubService {
     };
   }
 
+
   getCommits(owner: string, repo: string): Observable<AxiosResponse> {
+    const octokit = new Octokit({
+      auth: "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",
+    });
+
 
     const url = `https://api.github.com/repos/${owner}/${repo}/commits`;
     const headers = this.getHeaders();
-    console.log(headers)
+    console.log(headers);
 
     // Add a console.log statement before making the HTTP request
     console.log('Making GitHub API request with URL:', url);
 
     return this.httpService
       .get(url, { headers })
-      .pipe(map((response: AxiosResponse) => response.data));
-      /*.pipe(
+      .pipe(map((response: AxiosResponse) => response.data))
+      .pipe(
       tap((response) => {
         console.log('GitHub API response:', response);
       })
-    );*/
+    );
 
 
   }
