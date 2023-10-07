@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { GithubService } from '../../service/github.service';
+import { GithubService } from '../service/github.service';
 import Flatted from 'flatted';
 
 @Controller('commits')
@@ -8,11 +8,22 @@ export class CommitsController {
   constructor(private readonly githubService: GithubService) {}
 
   @Get(':owner/:repo')
-  getCommits(
+  async getCommits(
     @Param('owner') owner: string,
     @Param('repo') repo: string,
   ) {
-    return this.githubService.getCommits(owner, repo);
+    const commits = await this.githubService.getCommits(owner, repo);
+    return commits; // This will automatically be converted to JSON by Nest.js
+  }
+
+  @Get(':owner/:repo/:ref')
+    async getCommit(  @Param('owner') owner: string,
+                    @Param('repo') repo: string,
+                    @Param('ref') ref: string
+                    ){
+
+    const commit = await this.githubService.getCommit(owner, repo, ref);
+    return commit; // This will automatically be converted to JSON by Nest.js
   }
 
 /*
