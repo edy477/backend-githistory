@@ -66,6 +66,20 @@ export class GithubService {
 
   }
 
+  getCommitStatus(
+    owner: string,
+    repo: string,
+    ref: string){
+
+    const url = `https://api.github.com/repos/${owner}/${repo}/commits/${ref}/status`;
+    const headers = this.getHeaders();
+    return this.httpService
+      .get(url, { headers })
+      .pipe(map((response: AxiosResponse) => response.data));
+
+  }
+
+
 
 
 }
