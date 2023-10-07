@@ -13,6 +13,7 @@ export class CommitsController {
     @Param('repo') repo: string,
   ) {
     const commits = await this.githubService.getCommits(owner, repo);
+    console.log(commits)
     return commits; // This will automatically be converted to JSON by Nest.js
   }
 
@@ -25,6 +26,7 @@ export class CommitsController {
     const commit = await this.githubService.getCommit(owner, repo, ref);
     return commit; // This will automatically be converted to JSON by Nest.js
   }
+
 
 /*
   constructor(private readonly githubService: GithubService) {}
