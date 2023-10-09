@@ -15,6 +15,8 @@ export class GithubService {
     const accessToken = this.configService.get<string>('GITHUB_ACCESS_TOKEN');
     return {
       Authorization: `Bearer ${accessToken}`,
+      Accept: 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
     };
   }
 
@@ -33,13 +35,8 @@ export class GithubService {
     console.log('Making GitHub API request with URL:', url);
 
     return this.httpService
-      .get(url, { headers })
-      .pipe(map((response: AxiosResponse) => response.data))
-      .pipe(
-      tap((response) => {
-        console.log('GitHub API response:', response);
-      })
-    );
+      .get(url, { headers})
+      .pipe(map((response: AxiosResponse) => response.data));
 
 
   }
@@ -78,6 +75,20 @@ export class GithubService {
 
     const url = `https://api.github.com/repos/${owner}/${repo}/commits/${ref}/status`;
     const headers = this.getHeaders();
+    return this.httpService
+      .get(url, { headers })
+      .pipe(map((response: AxiosResponse) => response.data));
+
+  }
+  getCommitPulls(
+    owner: string,
+    repo: string,
+    ref: string
+  ){
+///repos/{owner}/{repo}/commits/{commit_sha}/pulls
+    const url = `https://api.github.com/repos/${owner}/${repo}/commits/${ref}/pulls`;
+    const headers = this.getHeaders();
+    console.log(url)
     return this.httpService
       .get(url, { headers })
       .pipe(map((response: AxiosResponse) => response.data));

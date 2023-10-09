@@ -27,6 +27,16 @@ export class CommitsController {
     return commit; // This will automatically be converted to JSON by Nest.js
   }
 
+  @Get(':owner/:repo/:ref/pulls')
+  async getCommitPulls(
+    @Param('owner') owner: string,
+                    @Param('repo') repo: string,
+                    @Param('ref') ref: string
+  ){
+
+    const commit = await this.githubService.getCommitPulls(owner, repo, ref);
+    return commit; // This will automatically be converted to JSON by Nest.js
+  }
 
 /*
   constructor(private readonly githubService: GithubService) {}
